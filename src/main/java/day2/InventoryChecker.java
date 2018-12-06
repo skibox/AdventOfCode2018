@@ -1,4 +1,4 @@
-package day1;
+package day2;
 
 import utils.FileReader;
 
@@ -7,68 +7,40 @@ import java.util.*;
 
 
 public class InventoryChecker {
+    public static List<String> validBoxes = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         List<String> boxes = getBoxes();
-        List<String> validBoxes = wqerwer(boxes);
+        getValidBoxes(boxes);
 
+        System.out.println();
         for (String line : validBoxes) {
             System.out.println(line);
         }
 
         System.out.println(validBoxes.size() + ": number of valid boxes");
+
     }
 
-//    public static void getValidBoxes() throws IOException{
-//        List<String> validBoxes = new ArrayList<>();
-//        List<String> boxes = getBoxes();
-//        Collections.sort(boxes);
-//
-//        bpl(boxes, validBoxes);
-//
-//        System.out.println("Number of valid boxes: " + validBoxes.size());
-//        for(String line : validBoxes){
-//            System.out.println(line);
-//        }
-//    }
-//
-//    public static void bpl(List<String> boxes, List<String> validBoxes){
-//        List<String> tempBoxes = boxes;
-//        while(tempBoxes.size() > 1){
-//            getLinesFromI0toImax();
-//
-//
-//
-//
-//
-//            bpl(boxes, validBoxes);
-//        }
-//    }
-    public static int getLastSameCharIndex(char[] line1, char[] line2){
-        int lastSameIndex = 0;
-        for(int i = 0; i < line1.length - 1; i++){
-            if(line1[lastSameIndex + 1] != line2[lastSameIndex + 1]) break;
-            else lastSameIndex++;
-        }
-
-        return lastSameIndex;
-    }
-
-    public static List<String> wqerwer(List<String> boxes){
-        List<String> validBoxes = new ArrayList<>();
-
+    public static void getValidBoxes(List<String> boxes){
         for(int i = 0; i < boxes.size(); i++){
-            if(isBoxValid(i, boxes)) validBoxes.add(boxes.get(i));
+            addboxIfValid(i, boxes);
         }
-
-        return validBoxes;
     }
 
-    public static boolean isBoxValid(int startingIndex, List<String> boxes){
+    public static void addboxIfValid(int startingIndex, List<String> boxes){
         boolean output = false;
         char[] line1 = boxes.get(startingIndex).toCharArray();
+        String line1String = boxes.get(startingIndex);
 
         for(int i = startingIndex + 1; i < boxes.size(); i++){
             char[] line2 = boxes.get(i).toCharArray();
+            String line2String = boxes.get(i);
+
+            System.out.println("=========================================");
+            System.out.println(line1String + " Line " + startingIndex);
+            System.out.println(line2String + " Line " + i);
+
             int lineCounter = 0;
 
             for(int j = 0; j < line1.length - 1; j++){
@@ -78,63 +50,18 @@ public class InventoryChecker {
                         break;
                     }
                 }
-                if(lineCounter == line1.length - 1){
-                    output = true;
-                }
+            }
+
+            if(lineCounter < 2) {
+                System.out.println("Added line:  ");
+                validBoxes.add(line1String);
+                validBoxes.add(line2String);
             }
         }
-        return output;
-    }
-
-    public static List<String> asd(List<String> boxes) {
-        Collections.sort(boxes);
-        int lineCounter = 0;
-        int k = 1;
-        List<String> validBoxes = new ArrayList<>();
-        List<String> validBoxesList = new ArrayList<>();
-
-        for (int i = 0; i < boxes.size() - 2; i++) {
-            System.out.println("checking line " + i);
-            char[] line1 = boxes.get(i).toCharArray();
-            char[] line2 = boxes.get(i + 1).toCharArray();
-
-            int lastSameIndex = getLastSameCharIndex(line1, line2);
-            String line1begin = boxes.get(i).substring(0,lastSameIndex + 1);
-            String line2begin = boxes.get(i + 1).substring(0,lastSameIndex + 1);
-
-            while (line1begin.equals(line2begin)) {
-                for (int j = lastSameIndex + 1; j < line1.length - 1; j++) {
-                    if (line1[j] != line2[j]) {
-                        lineCounter++;
-                        if (lineCounter > 1) {
-                            break;
-                        }
-                    }
-                }
-                if (lineCounter <= 1) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append(line1).append(" almost identical to ").append("\n").append(line2).append("\n");
-                    validBoxes.add(stringBuilder.toString());
-                    validBoxesList.add(new String(line1));
-                }
-                lineCounter = 0;
-                if((i + 1 + k) <= boxes.size() - 1) line2begin = boxes.get(i + 1 + k).substring(0, lastSameIndex + 1);
-                if(line2begin.length() == 1) break;
-                k++;
-            }
-            k = 1;
-        }
-
-        System.out.println("Number of valid boxes: " + validBoxesList.size());
-
-        return validBoxesList;
     }
 
     public static void calculateChecksum() throws IOException {
-        FileReader fileReader = new FileReader();
-        fileReader.setFile("/boxes.txt");
-
-        List<String> boxes = fileReader.getLinesFromFile();
+        List<String> boxes = getBoxes();
         Map<Character, Integer> duplicates;
 
         Integer tempVal;
