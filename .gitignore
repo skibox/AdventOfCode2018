@@ -24,3 +24,8 @@ hs_err_pid*
 
 .idea
 .idea/*
+/.attach_pid16746
+/.attach_pid16691
+/.attach_pid18186
+/target/
+/AdventOfCode2018.iml
