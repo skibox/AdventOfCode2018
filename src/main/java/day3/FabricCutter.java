@@ -19,11 +19,35 @@ public class FabricCutter {
 
     insertClaims(trimmedClaims);
 
-    System.out.println("Overlapping squares: " + countOverlappingFabric());
+    testClaims(trimmedClaims);
 
   }
 
-  public static void printFabric(){
+  public static void testClaims(List<String[]> preparedClaims) {
+
+    for (int i = 0; i < preparedClaims.size(); i++) {
+      String[] claim = preparedClaims.get(i);
+      int column = Integer.parseInt(claim[0].split("x")[0]);
+      int row = Integer.parseInt(claim[0].split("x")[1]);
+
+      int rectangleWidth = Integer.parseInt(claim[1].split("x")[0]);
+      int rectangleHeight = Integer.parseInt(claim[1].split("x")[1]);
+
+      boolean hit = true;
+
+      for (int k = column; k < column + rectangleWidth; k++) {
+        for (int l = row; l < row + rectangleHeight; l++) {
+          if (fabric[k][l] > 1) {
+            hit = false;
+          }
+        }
+      }
+
+      if (hit) System.out.println("Claim id: " + i + 1);
+    }
+  }
+
+  public static void printFabric() {
     for (int i = 0; i < fabric.length; i++) {
       for (int j = 0; j < fabric[i].length; j++) {
         System.out.print(fabric[i][j] + " ");
@@ -32,12 +56,12 @@ public class FabricCutter {
     }
   }
 
-  public static int countOverlappingFabric(){
+  public static int countOverlappingFabric() {
     int output = 0;
 
     for (int i = 0; i < fabric.length; i++) {
       for (int j = 0; j < fabric[i].length; j++) {
-        if(fabric[i][j] >= 2) output++;
+        if (fabric[i][j] >= 2) output++;
       }
     }
 
@@ -56,8 +80,7 @@ public class FabricCutter {
 
     int rectangleWidth = Integer.parseInt(claim[1].split("x")[0]);
     int rectangleHeight = Integer.parseInt(claim[1].split("x")[1]);
-
-
+    
     for (int i = column; i < column + rectangleWidth; i++) {
       for (int j = row; j < row + rectangleHeight; j++) {
         fabric[i][j]++;
