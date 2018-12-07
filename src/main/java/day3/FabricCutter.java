@@ -80,7 +80,7 @@ public class FabricCutter {
 
     int rectangleWidth = Integer.parseInt(claim[1].split("x")[0]);
     int rectangleHeight = Integer.parseInt(claim[1].split("x")[1]);
-    
+
     for (int i = column; i < column + rectangleWidth; i++) {
       for (int j = row; j < row + rectangleHeight; j++) {
         fabric[i][j]++;
