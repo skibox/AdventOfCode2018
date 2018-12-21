@@ -1,10 +1,9 @@
 def improve_polymer
-  # polymer = fetch_polymer
+  polymer = fetch_polymer
 
   ('a'..'z').each do |unit_type|
-    polymer_copy = fetch_polymer
-    # polymer_copy = polymer
-    # TODO 
+    polymer_copy = polymer.clone
+
     polymer_copy.delete unit_type
     polymer_copy.delete unit_type.upcase
 
@@ -12,6 +11,7 @@ def improve_polymer
           unit_type +
           ': polymer length = ' +
           reacted_polymer(polymer_copy).length.to_s
+
   end
 end
 
