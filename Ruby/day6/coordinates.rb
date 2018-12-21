@@ -7,25 +7,28 @@ def final_field(field, fixed_points)
 end
 
 def get_closest_point(point, fixed_points)
-  comp_distance = -1
   distances = []
   closest = '-6969c'
   fixed_points.each do |fixed_point, value|
     distance = calculate_distance(point, fixed_point)
-
+    distances << [distance, value]
+    
     if point == fixed_point
-      next
-    elsif distances.include?(distance)
-      closest = '.'
+      closest = 's'
       break
-    else
-      distances << distance
     end
-
-    closest = value.to_s + 'c' if distance > comp_distance
-    comp_distance = distance
   end
 
+  distances.sort! { |a, b| a[0] <=> b[0] }
+
+  unless closest == 's'
+    closest = if distances[0][0] != distances[1][0]
+                distances[0][1].to_s + 'c'
+              else
+                '.'
+              end
+  end
+  
   closest
 end
 
@@ -40,13 +43,11 @@ end
 
 def initial_field
   field = {}
-  hits = fetch_fixed_points.clone
   max_values = calc_arr_size.clone
 
   (0..max_values[1]).each do |col|
     (0..max_values[0]).each do |row|
       field[[col, row]] = -1
-      # field[[col, row]] = hits[col, row] if hits.include?([col, row])
     end
   end
 
@@ -101,28 +102,30 @@ def supl_hash(final_field, hash)
 end
 
 field = initial_field.clone
-fixed_points = fetch_fixed_points
+fixed_points = fetch_fixed_points.clone
 
-final_field = final_field(field,fixed_points)
+final_field = final_field(field,fixed_points).clone
 
 comp_arr = ('1'..'50').to_a
 comp_arr << '.'
+comp_arr << 's'
 
 comp_hash = {}
 
 comp_arr.each do |item|
-  if item != '.'
-    item << 'c'
-    comp_hash[item] = 0
-  else
-    comp_hash[item] = 0
-  end
+  item << 'c' unless item == '.' || item == 's'
+  comp_hash[item] = 0
 end
-
+# puts calculate_distance([0,0],[23,5])
 # puts comp_hash
 
 # puts fetch_fixed_points
 p supl_hash(final_field, comp_hash)
+# p fixed_points
+puts
+puts
+
+# p get_closest_point([100,121],fixed_points)
 
 
-# puts final_field
+# puts final_field.first

@@ -32,3 +32,5 @@ hs_err_pid*
 /AdventOfCode2018.iml
 .vscode
 .vscode/*
+Ruby/.vscode/
+Ruby/.vscode/*
